@@ -9,7 +9,21 @@ import UIKit
 
 final class RootViewController: UIViewController {
 
+    private enum AlertType {
+        case noWeatherDataAvailable
+    }
+    
     // MARK: - Properties
+    
+    var viewModel: RootViewModel? {
+        didSet {
+            guard let viewModel = viewModel else {
+                return
+            }
+            
+            setupViewModel(with: viewModel)
+        }
+    }
     
     private let dayViewController: DayViewController = {
         guard let dayViewController = UIStoryboard.main.instantiateViewController(withIdentifier: DayViewController.storyboardIdentifier) as? DayViewController else {
@@ -65,8 +79,46 @@ final class RootViewController: UIViewController {
         weekViewController.didMove(toParent: self)
     }
     
-}
+    private func setupViewModel(with viewModel: RootViewModel) {
+       // Configure View Model
+       viewModel.didFetchWeatherData = { [weak self] (data, error) in
+         if let _ = error {
+            DispatchQueue.main.async {
+              self?.presentAlert(of: .noWeatherDataAvailable)
+            }
+         } else if let data = data as? WeatherResponse {
+            print("data.forecast ",data.forecast)
+            print("data.current.weather[0].icon ",data.current.weather[0].icon)
+            print("data.current.weather[0].description ",data.current.weather[0].description)
+           
+         } else {
+            DispatchQueue.main.async {
+             self?.presentAlert(of: .noWeatherDataAvailable)
+            }
+         }
+       }
+     }
+    
+    private func presentAlert(of alertType: AlertType) {
+        let title: String
+        let message: String
+        
+        switch alertType {
+        case .noWeatherDataAvailable:
+                title = "Unable to Fetch Weather Data"
+                message = "The application is unable to fetch"
+        }
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: title, style: .cancel, handler: nil)
+        
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true,completion: nil)
+    }
 
+}
 extension RootViewController {
     fileprivate enum Layout {
         enum DayView {
