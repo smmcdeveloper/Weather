@@ -9,6 +9,15 @@ import UIKit
 
 final class DayViewController: UIViewController {
 
+    var viewModel: DayViewModel? {
+        didSet {
+            guard let viewModel = viewModel else {
+                return
+            }
+            
+            setupViewModel(with: viewModel)
+        }
+    }
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -24,4 +33,7 @@ final class DayViewController: UIViewController {
         view.backgroundColor = .green
     }
 
+    private func setupViewModel(with viewModel: DayViewModel) {
+        print(viewModel)
+    }
 }

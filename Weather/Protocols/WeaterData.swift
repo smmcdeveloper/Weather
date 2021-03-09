@@ -8,14 +8,32 @@
 import Foundation
 
 protocol WeatherData {
+ 
+    var latitud: Double { get }
+    var longitud: Double { get }
     
-    var lat: Double { get }
-    var lon: Double { get }
-    
+    var current: CurrentWeatherConditions { get }
     var forecast: [ForecastWeatherConditions] { get }
 }
 
-protocol ForecastWeatherConditions {
+protocol WeatherConditions {
+    
+    var time: Date { get }
     var icon: String { get }
-    var description: String { get }
+    var windSpeed: Double { get }
+    
+}
+
+protocol CurrentWeatherConditions: WeatherConditions {
+    
+    var summary: String { get }
+    var temperature: Double { get }
+    
+}
+
+protocol ForecastWeatherConditions {
+    
+    var temperatureMin: Double { get }
+    var temperatureMax: Double { get }
+    
 }
