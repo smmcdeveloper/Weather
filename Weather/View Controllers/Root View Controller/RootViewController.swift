@@ -59,22 +59,27 @@ final class RootViewController: UIViewController {
     // MARK: - Helper Methods
     
     private func setupChildViewControllers() {
+        // Add Child View Controller
         addChild(dayViewController)
         addChild(weekViewController)
         
+        // Add Child View as Subview
         view.addSubview(dayViewController.view)
         view.addSubview(weekViewController.view)
         
+        // Configure Day View
         dayViewController.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         dayViewController.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         dayViewController.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        dayViewController.view.heightAnchor.constraint(equalToConstant: Layout.DayView.height).isActive = true
         
+        
+        // Configure week View
         weekViewController.view.topAnchor.constraint(equalTo:dayViewController.view.bottomAnchor).isActive = true
         weekViewController.view.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         weekViewController.view.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         weekViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
+        // Notify Child view Controller
         dayViewController.didMove(toParent: self)
         weekViewController.didMove(toParent: self)
     }
@@ -123,11 +128,5 @@ final class RootViewController: UIViewController {
     }
 
 }
-extension RootViewController {
-    fileprivate enum Layout {
-        enum DayView {
-            static let height: CGFloat = 200.0
-        }
-    }
-}
+
 
