@@ -26,6 +26,7 @@
 		A2D72A1125F7DF8B0034FFB2 /* WeekViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D72A1025F7DF8B0034FFB2 /* WeekViewModel.swift */; };
 		A2E36BAB25E94F60000C7566 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E36BAA25E94F60000C7566 /* UIViewController.swift */; };
 		A2E36BB025E95041000C7566 /* UIStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E36BAF25E95040000C7566 /* UIStoryboard.swift */; };
+		A2F4DE0125FA49C400F8BCF2 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F4DE0025FA49C400F8BCF2 /* Styles.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		A2D72A1025F7DF8B0034FFB2 /* WeekViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekViewModel.swift; sourceTree = "<group>"; };
 		A2E36BAA25E94F60000C7566 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		A2E36BAF25E95040000C7566 /* UIStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboard.swift; sourceTree = "<group>"; };
+		A2F4DE0025FA49C400F8BCF2 /* Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				A2B8F20425EC098A00AD7333 /* Configuration.swift */,
+				A2F4DE0025FA49C400F8BCF2 /* Styles.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				A24AC5D025E6970E009D41D1 /* WeekViewController.swift in Sources */,
 				A2B8F23C25EC6F1C00AD7333 /* WeatherResponse.swift in Sources */,
 				A26730F625E3F14500BB39A4 /* RootViewController.swift in Sources */,
+				A2F4DE0125FA49C400F8BCF2 /* Styles.swift in Sources */,
 				A2B8F20525EC098A00AD7333 /* Configuration.swift in Sources */,
 				A2E36BAB25E94F60000C7566 /* UIViewController.swift in Sources */,
 				A26730F225E3F14500BB39A4 /* AppDelegate.swift in Sources */,

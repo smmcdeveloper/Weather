@@ -41,7 +41,7 @@ class RootViewModel {
             if let response = response as? HTTPURLResponse {
                 print("Status Code: \(response.statusCode)")
             }
-            print(">>>response: ",response)
+            //print(">>>response: ",response)
             if let error = error {
                 print("Unable to Fetch Weather Data \(error)")
                 
