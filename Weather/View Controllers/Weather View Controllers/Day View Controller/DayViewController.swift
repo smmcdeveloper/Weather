@@ -31,17 +31,25 @@ final class DayViewController: UIViewController {
     }
     
     @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var temperatureLabel: UILabel!
+    @IBOutlet var windSpeedLabel: UILabel!
+    @IBOutlet var descriptionLabel: UILabel!
     
     @IBOutlet var iconImageView: UIImageView! {
         didSet {
             iconImageView.contentMode = .scaleAspectFit
+            iconImageView.tintColor = .baseTintColor
         }
     }
     
-    @IBOutlet var temperatureLabel: UILabel!
-    @IBOutlet var windSpeedLabel: UILabel!
+    @IBOutlet var activityIndicatorView: UIActivityIndicatorView! {
+        didSet {
+            activityIndicatorView.startAnimating()
+            activityIndicatorView.hidesWhenStopped = true
+        }
+    }
     
-    @IBOutlet var descriptionLabel: UILabel!
+    // MARK: -
     
     @IBOutlet var regularLabels: [UILabel]! {
         didSet {
@@ -61,6 +69,14 @@ final class DayViewController: UIViewController {
         }
     }
     
+    @IBOutlet var weatherDataViews: [UIView]! {
+        didSet {
+            for view in weatherDataViews {
+                view.isHidden = true
+            }
+        }
+    }
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -73,10 +89,22 @@ final class DayViewController: UIViewController {
     // MARK: Helper Methods
     private func setupView() {
         // Configure View
-        view.backgroundColor = .green
+        view.backgroundColor = .lightBackgroundColor
     }
 
     private func setupViewModel(with viewModel: DayViewModel) {
-        print(viewModel)
+        activityIndicatorView.stopAnimating()
+        
+        dataLabel.text = viewModel.date
+        timeLabel.text = viewModel.time
+        windSpeedLabel.text = viewModel.windSpeed
+        temperatureLabel.text = viewModel.temperature
+        descriptionLabel.text = viewModel.summary
+        
+        iconImageView.image = viewModel.image
+        
+        for view in weatherDataViews {
+            view.isHidden = false
+        }
     }
 }
