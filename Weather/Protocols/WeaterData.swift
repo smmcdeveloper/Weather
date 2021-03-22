@@ -31,7 +31,7 @@ protocol CurrentWeatherConditions: WeatherConditions {
     
 }
 
-protocol ForecastWeatherConditions {
+protocol ForecastWeatherConditions: WeatherConditions {
     
     var temperatureMin: Double { get }
     var temperatureMax: Double { get }
