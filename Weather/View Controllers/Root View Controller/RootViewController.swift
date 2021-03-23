@@ -10,6 +10,7 @@ import UIKit
 final class RootViewController: UIViewController {
 
     private enum AlertType {
+        case notAuthorizedToRequestLocation
         case noWeatherDataAvailable
     }
     
@@ -87,8 +88,18 @@ final class RootViewController: UIViewController {
     private func setupViewModel(with viewModel: RootViewModel) {
        // Configure View Model
        viewModel.didFetchWeatherData = { [weak self] (weatherData, error) in
-         if let _ = error {
+         if let error = error {
             DispatchQueue.main.async {
+                var alertType: AlertType
+                
+                switch error {
+                    case .notAuthorizedToRequestLocation:
+                        alertType = .notAuthorizedToRequestLocation
+                    case .noWeatherDataAvailable:
+                        alertType = .noWeatherDataAvailable
+                }
+                
+              // Notify User
               self?.presentAlert(of: .noWeatherDataAvailable)
             }
          } else if let weatherData = weatherData as? WeatherResponse {
@@ -113,9 +124,12 @@ final class RootViewController: UIViewController {
         let message: String
         
         switch alertType {
-        case .noWeatherDataAvailable:
+         case .noWeatherDataAvailable:
                 title = "Unable to Fetch Weather Data"
                 message = "The application is unable to fetch"
+         case .notAuthorizedToRequestLocation:
+                title = "Unable to Fetch Weather Data for Your Location"
+                message = "Weather Report is not authorized to access your current location."
         }
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
