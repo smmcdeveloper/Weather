@@ -6,12 +6,12 @@
 //
 
 import Foundation
-import CoreLocation
 
 class RootViewModel: NSObject {
     
     enum WeatherDataError: Error {
         case notAuthorizedToRequestLocation
+        case failedToRequestLocation
         case noWeatherDataAvailable
     }
     
@@ -23,17 +23,13 @@ class RootViewModel: NSObject {
     
     var didFetchWeatherData: DidFetchWeaterDataCompletion?
     
-    private lazy var locationManager: CLLocationManager = {
-        let locationManager = CLLocationManager()
-        
-        locationManager.delegate = self
-        
-        return locationManager
-    }()
+    private let locationService: LocationService
     
     // MARK: - Initialization
     
-    override init() {
+    init(locationService: LocationService) {
+        self.locationService = locationService
+        
         super.init()
         
         // Fetch Weather Data
@@ -45,12 +41,26 @@ class RootViewModel: NSObject {
     // MARK: - Helper Methods
     
     private func fetchLocation() {
-        locationManager.requestLocation()
+       // Request Location
+        locationService.fetchLocation { [weak self] (location, error) in
+            if let error = error {
+                print("Unable to Fetch Location (\(error)")
+                
+                self?.didFetchWeatherData?(nil, .notAuthorizedToRequestLocation)
+            }
+            if let location = location {
+                self?.fetchWeatherData(for: location)
+            } else {
+                print ("Unable to Fetch Location")
+                
+                self?.didFetchWeatherData?(nil, .failedToRequestLocation)
+            }
+        }
     }
     
-    private func fetchWeatherData(for location: CLLocation) {
+    private func fetchWeatherData(for location: Location) {
         // Initialize Weather Request
-        let weatherRequest = WeatherRequest(baseUrl: WeatherService.authenticatedBaseUrl, location: location)
+        //let weatherRequest = WeatherRequest(baseUrl: WeatherService.authenticatedBaseUrl, location: location)
         
         let url2 = URL(string:"https://cocoacasts.com/clearsky/?api_key=tnperxfip8renk2hlzcccwetbnesby&lat=51.400592&long=4.76097") //"https://api.openweathermap.org/data/2.5/onecall?lat=33.441792&lon=-94.037689&appid=814058c9ea3ae6e1e9cd17c144759373")
         
@@ -86,38 +96,5 @@ class RootViewModel: NSObject {
                }
             }
         }.resume()
-    }
-}
-
-extension RootViewModel: CLLocationManagerDelegate {
-    
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-          case .authorizedAlways:
-              fetchLocation()
-          case .authorizedWhenInUse:
-              print("Authorization granted only when app is in use.")
-          case .denied:
-              didFetchWeatherData?(nil, .notAuthorizedToRequestLocation)
-          case .notDetermined:
-              locationManager.requestWhenInUseAuthorization()
-          case .restricted:
-              didFetchWeatherData?(nil, .notAuthorizedToRequestLocation)
-          @unknown default:
-              didFetchWeatherData?(nil, .notAuthorizedToRequestLocation)
-          }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else {
-            return
-        }
-        
-        fetchWeatherData(for: location)
-    }
-    
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Unable to Fetch Location (\(error))")
     }
 }

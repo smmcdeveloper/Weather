@@ -11,6 +11,7 @@ final class RootViewController: UIViewController {
 
     private enum AlertType {
         case notAuthorizedToRequestLocation
+        case failedToRequestLocation
         case noWeatherDataAvailable
     }
     
@@ -95,6 +96,8 @@ final class RootViewController: UIViewController {
                 switch error {
                     case .notAuthorizedToRequestLocation:
                         alertType = .notAuthorizedToRequestLocation
+                    case .failedToRequestLocation:
+                        alertType = .failedToRequestLocation
                     case .noWeatherDataAvailable:
                         alertType = .noWeatherDataAvailable
                 }
@@ -127,6 +130,11 @@ final class RootViewController: UIViewController {
          case .noWeatherDataAvailable:
                 title = "Unable to Fetch Weather Data"
                 message = "The application is unable to fetch"
+         
+         case .failedToRequestLocation:
+                title = "Unable to Fetch Weather Data for Your Location"
+                message = "Weather Report is not able to fetch your current locaiotn dure to a technical issue."
+            
          case .notAuthorizedToRequestLocation:
                 title = "Unable to Fetch Weather Data for Your Location"
                 message = "Weather Report is not authorized to access your current location."
