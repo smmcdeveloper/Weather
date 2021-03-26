@@ -15,13 +15,18 @@ class RootViewModel: NSObject {
         case noWeatherDataAvailable
     }
     
+    enum WeatherDataResult {
+        case success(WeatherData)
+        case failure(WeatherDataError)
+    }
+    
     // MARK: - Type Aliases
     
-    typealias DidFetchWeaterDataCompletion = (WeatherData?, WeatherDataError?) -> Void
+    typealias FetchWeaterDataCompletion = (WeatherDataResult) -> Void
     
     // MARK: - Properties
     
-    var didFetchWeatherData: DidFetchWeaterDataCompletion?
+    var didFetchWeatherData: FetchWeaterDataCompletion?
     
     private let locationService: LocationService
     
@@ -42,18 +47,18 @@ class RootViewModel: NSObject {
     
     private func fetchLocation() {
        // Request Location
-        locationService.fetchLocation { [weak self] (location, error) in
-            if let error = error {
-                print("Unable to Fetch Location (\(error)")
-                
-                self?.didFetchWeatherData?(nil, .notAuthorizedToRequestLocation)
-            }
-            if let location = location {
-                self?.fetchWeatherData(for: location)
-            } else {
-                print ("Unable to Fetch Location")
-                
-                self?.didFetchWeatherData?(nil, .failedToRequestLocation)
+        locationService.fetchLocation { [weak self] (result) in
+            switch result {
+                case .success(let location):
+                    // Invoke Completion Handler
+                    self?.fetchWeatherData(for: location)
+                case .failure(let error):
+                    print("Unable to Fetch Location(\(error))")
+                    
+                    let result:WeatherDataResult = .failure(.notAuthorizedToRequestLocation)
+                    
+                    // Invoke Completion Handler
+                    self?.didFetchWeatherData?(result)
             }
         }
     }
@@ -75,7 +80,9 @@ class RootViewModel: NSObject {
                if let error = error {
                  print("Unable to Fetch Weather Data \(error)")
                 
-                self?.didFetchWeatherData?(nil, .noWeatherDataAvailable)
+                let result:WeatherDataResult = .failure(.noWeatherDataAvailable)
+
+                self?.didFetchWeatherData?(result)
                } else if let data = data {
                     // Initialize JSON Decoder
                     let decoder = JSONDecoder()
@@ -83,16 +90,24 @@ class RootViewModel: NSObject {
                     decoder.dateDecodingStrategy = .secondsSince1970
                 
                     do {
-                      // Decode JSON Response
-                      let weatherResponse = try decoder.decode(WeatherResponse.self, from: data)
-                       self?.didFetchWeatherData?(weatherResponse, nil)
+                        // Decode JSON Response
+                        let weatherResponse = try decoder.decode(WeatherResponse.self, from: data)
+                        
+                        let result:WeatherDataResult = .success(weatherResponse)
+                        
+                        // Invoke Completion Handler
+                        self?.didFetchWeatherData?(result)
                     } catch{
                        print("Unable to Decode JSON Response \(error)")
                     
-                       self?.didFetchWeatherData?(nil, .noWeatherDataAvailable)
+                        let result:WeatherDataResult = .failure(.noWeatherDataAvailable)
+
+                        self?.didFetchWeatherData?(result)
                     }
                } else {
-                 self?.didFetchWeatherData?(nil, .noWeatherDataAvailable)
+                 let result:WeatherDataResult = .failure(.noWeatherDataAvailable)
+
+                 self?.didFetchWeatherData?(result)
                }
             }
         }.resume()

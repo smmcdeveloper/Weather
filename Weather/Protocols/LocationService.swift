@@ -11,9 +11,18 @@ enum LocationServiceError {
     case notAuthorizedToRequestLocation
 }
 
+enum LocationServiceResult {
+    case success(Location)
+    case failure(LocationServiceError)
+}
+
 protocol LocationService {
     
-    typealias FetchLocationCompletion = (Location?, LocationServiceError?) -> Void
+    // MARK: - Type Aliasses
+    
+    typealias FetchLocationCompletion = (LocationServiceResult) -> Void
+    
+    // MARK: - Methods
     
     func fetchLocation(completion: @escaping FetchLocationCompletion) 
 }

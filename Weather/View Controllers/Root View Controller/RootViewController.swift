@@ -88,37 +88,36 @@ final class RootViewController: UIViewController {
     
     private func setupViewModel(with viewModel: RootViewModel) {
        // Configure View Model
-       viewModel.didFetchWeatherData = { [weak self] (weatherData, error) in
-         if let error = error {
-            DispatchQueue.main.async {
-                var alertType: AlertType
-                
-                switch error {
-                    case .notAuthorizedToRequestLocation:
-                        alertType = .notAuthorizedToRequestLocation
-                    case .failedToRequestLocation:
-                        alertType = .failedToRequestLocation
-                    case .noWeatherDataAvailable:
-                        alertType = .noWeatherDataAvailable
-                }
-                
-              // Notify User
-              self?.presentAlert(of: .noWeatherDataAvailable)
-            }
-         } else if let weatherData = weatherData as? WeatherResponse {
-            //print("weatherData ",weatherData)
+       viewModel.didFetchWeatherData = { [weak self] (result) in
+        
+        switch result {
+        case .success(let weatherData):
+            //Initialize Day View Model
             let dayViewModel = DayViewModel(weatherData: weatherData.current)
+            
+            // Update Day View Controller
             self?.dayViewController.viewModel = dayViewModel
             
+            // Initialize Week View Model
             let weekViewModel = WeekViewModel(weatherData: weatherData.forecast)
             
+            // Update Week View Controller
             self?.weekViewController.viewModel = weekViewModel
+        case .failure(let error):
+            var alertType: AlertType
             
-         } else {
-            DispatchQueue.main.async {
-             self?.presentAlert(of: .noWeatherDataAvailable)
+            switch error {
+                case .notAuthorizedToRequestLocation:
+                    alertType = .notAuthorizedToRequestLocation
+                case .failedToRequestLocation:
+                    alertType = .failedToRequestLocation
+                case .noWeatherDataAvailable:
+                    alertType = .noWeatherDataAvailable
             }
-         }
+            
+          // Notify User
+          self?.presentAlert(of: .noWeatherDataAvailable)
+        }
        }
      }
     

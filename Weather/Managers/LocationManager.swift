@@ -33,7 +33,10 @@ extension LocationManager: CLLocationManagerDelegate {
     
     private func notAuthorizedToRequestLocation()
     {
-        didFetchLocation?(nil,.notAuthorizedToRequestLocation)
+        let result: LocationServiceResult = .failure(.notAuthorizedToRequestLocation)
+        
+        // Invoke Completion Handler
+        didFetchLocation?(result)
         
         // make sure it can not be invoke more than 1 time
         didFetchLocation = nil
@@ -62,7 +65,10 @@ extension LocationManager: CLLocationManagerDelegate {
             return
         }
         
-       didFetchLocation?(Location(location: location), nil)
+        let result: LocationServiceResult = .success(Location(location: location))
+        
+        // Invoke Completion Handler
+        didFetchLocation?(result)
         
         // make sure it can not be invoke more than 1 time
         didFetchLocation = nil
