@@ -13,6 +13,16 @@ enum Defaults {
     
 }
 
+enum Configuration {
+    static var refreshThreshole: TimeInterval {
+        #if DEBUG
+          return 60.0
+        #else
+          return 10.0 * 60.0
+        #endif
+    }
+}
+
 enum WeatherService {
     /*
      https://api.openweathermap.org/data/2.5/onecall?lat=33.441792&lon=-94.037689&appid=814058c9ea3ae6e1e9cd17c144759373

@@ -5,7 +5,7 @@
 //  Created by SMMC on 28/02/2021.
 //
 
-import Foundation
+import UIKit
 
 class RootViewModel: NSObject {
     
@@ -39,6 +39,8 @@ class RootViewModel: NSObject {
         
         // Fetch Weather Data
         fetchWeatherData(for: Defaults.location)
+        
+        setupNotificationHandling()
         
         fetchLocation()
     }
@@ -95,6 +97,8 @@ class RootViewModel: NSObject {
                         
                         let result:WeatherDataResult = .success(weatherResponse)
                         
+                        UserDefaults.didFetchWeatherData = Date()
+                        
                         // Invoke Completion Handler
                         self?.didFetchWeatherData?(result)
                     } catch{
@@ -111,5 +115,42 @@ class RootViewModel: NSObject {
                }
             }
         }.resume()
+    }
+    
+    
+    private func setupNotificationHandling() {
+        
+        // Application Will Enter Foreground
+        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: OperationQueue.main) { [weak self] (_) in
+            guard let didFetchWeatherData = UserDefaults.didFetchWeatherData else {
+                self?.refresh()
+                return
+            }
+            if Date().timeIntervalSince(didFetchWeatherData) > Configuration.refreshThreshole {
+                self?.refresh()
+            }
+         }
+    }
+
+    // MARK: -
+    
+    private func refresh() {
+        fetchLocation()
+    }
+}
+
+extension UserDefaults {
+    
+    private enum Keys {
+        static let didFetchWeatherData = "didFetchWeatherData"
+    }
+    
+    fileprivate class var didFetchWeatherData: Date? {
+        get {
+            return UserDefaults.standard.object(forKey: Keys.didFetchWeatherData) as? Date
+        }
+        set(newValue) {
+            UserDefaults.standard.set(newValue, forKey: Keys.didFetchWeatherData)
+        }
     }
 }
