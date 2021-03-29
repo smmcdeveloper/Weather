@@ -178,10 +178,10 @@
 		A24AC5CE25E696E3009D41D1 /* Week View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				A24AC5CF25E6970E009D41D1 /* WeekViewController.swift */,
 				A279D2E526066A9700C4748D /* Protocols */,
 				A279D29E260647B800C4748D /* Table View Cells */,
 				A2D72A0F25F7DF660034FFB2 /* View Models */,
-				A24AC5CF25E6970E009D41D1 /* WeekViewController.swift */,
 			);
 			path = "Week View Controller";
 			sourceTree = "<group>";

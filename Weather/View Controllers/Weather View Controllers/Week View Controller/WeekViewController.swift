@@ -7,15 +7,26 @@
 
 import UIKit
 
+protocol WeekViewControllerDelegate: class {
+    func controllerDidRefresh(_ controller: WeekViewController)
+}
+
 final class WeekViewController: UIViewController {
 
+    // MARK: Properties
+    
+    // weak to prevent the retent cicle
+    weak var delegate: WeekViewControllerDelegate?
+    
     var viewModel: WeekViewModel? {
         didSet {
-            guard let viewModel = viewModel else {
-                return
+    
+            if let viewModel = viewModel {
+                // Setup View Model
+                setupViewModel(with: viewModel)
             }
             
-            setupViewModel(with: viewModel)
+            
         }
     }
     
@@ -27,6 +38,8 @@ final class WeekViewController: UIViewController {
             tableView.estimatedRowHeight = 44.0
             tableView.rowHeight = UITableView.automaticDimension
             tableView.showsVerticalScrollIndicator = false
+            
+            tableView.refreshControl = refreshControl
         }
     }
     
@@ -37,6 +50,15 @@ final class WeekViewController: UIViewController {
         }
     }
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        
+        refreshControl.tintColor = .baseTintColor
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        
+        return refreshControl
+    }()
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -44,6 +66,14 @@ final class WeekViewController: UIViewController {
 
         // Setup View
         setupView()
+    }
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        delegate?.controllerDidRefresh(self)
+        
+        DispatchQueue.main.async { [self] in
+                refreshControl.endRefreshing()
+        }
     }
     
     // MARK: - Helper Methods

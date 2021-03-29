@@ -134,7 +134,7 @@ class RootViewModel: NSObject {
 
     // MARK: -
     
-    private func refresh() {
+    func refresh() {
         fetchLocation()
     }
 }
