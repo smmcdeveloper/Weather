@@ -19,6 +19,8 @@
 		A26730F925E3F14500BB39A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A26730F725E3F14500BB39A4 /* Main.storyboard */; };
 		A26730FB25E3F14700BB39A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A26730FA25E3F14700BB39A4 /* Assets.xcassets */; };
 		A26730FE25E3F14700BB39A4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A26730FC25E3F14700BB39A4 /* LaunchScreen.storyboard */; };
+		A2677A9E26135457002424D8 /* RootViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2677A9D26135457002424D8 /* RootViewModelTest.swift */; };
+		A2677AA5261355CB002424D8 /* MockLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2677AA4261355CB002424D8 /* MockLocationService.swift */; };
 		A279D2A02606480A00C4748D /* WeekDayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A279D29F2606480A00C4748D /* WeekDayTableViewCell.swift */; };
 		A279D2D626065C7200C4748D /* WeekDayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A279D2D526065C7200C4748D /* WeekDayViewModel.swift */; };
 		A279D2E726066AC100C4748D /* WeekDayRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A279D2E626066AC100C4748D /* WeekDayRepresentable.swift */; };
@@ -66,6 +68,8 @@
 		A26730FA25E3F14700BB39A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A26730FD25E3F14700BB39A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A26730FF25E3F14700BB39A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2677A9D26135457002424D8 /* RootViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModelTest.swift; sourceTree = "<group>"; };
+		A2677AA4261355CB002424D8 /* MockLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocationService.swift; sourceTree = "<group>"; };
 		A279D29F2606480A00C4748D /* WeekDayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayTableViewCell.swift; sourceTree = "<group>"; };
 		A279D2D526065C7200C4748D /* WeekDayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayViewModel.swift; sourceTree = "<group>"; };
 		A279D2E626066AC100C4748D /* WeekDayRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayRepresentable.swift; sourceTree = "<group>"; };
@@ -107,6 +111,7 @@
 		A2395A9925FD1E7D0031D0D9 /* WeatherTests */ = {
 			isa = PBXGroup;
 			children = (
+				A2677AA3261355A8002424D8 /* Mocks */,
 				A2395AA625FD1EC10031D0D9 /* Stubs */,
 				A2395ABF25FD2DC80031D0D9 /* Extensions */,
 				A2395AA725FD1EC40031D0D9 /* TestCases */,
@@ -129,6 +134,7 @@
 				A2395AB325FD26DA0031D0D9 /* DayViewModelTests.swift */,
 				A279D3122606780400C4748D /* WeekViewModelTest.swift */,
 				A279D32826067DD600C4748D /* WeekDayViewModelTests.swift */,
+				A2677A9D26135457002424D8 /* RootViewModelTest.swift */,
 			);
 			path = TestCases;
 			sourceTree = "<group>";
@@ -271,6 +277,14 @@
 				A26730FF25E3F14700BB39A4 /* Info.plist */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A2677AA3261355A8002424D8 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				A2677AA4261355CB002424D8 /* MockLocationService.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		A279D29E260647B800C4748D /* Table View Cells */ = {
@@ -454,7 +468,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2677AA5261355CB002424D8 /* MockLocationService.swift in Sources */,
 				A2395AC125FD2DE20031D0D9 /* XCTest.swift in Sources */,
+				A2677A9E26135457002424D8 /* RootViewModelTest.swift in Sources */,
 				A279D3132606780400C4748D /* WeekViewModelTest.swift in Sources */,
 				A2395AB425FD26DA0031D0D9 /* DayViewModelTests.swift in Sources */,
 				A279D32926067DD600C4748D /* WeekDayViewModelTests.swift in Sources */,

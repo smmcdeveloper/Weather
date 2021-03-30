@@ -41,8 +41,6 @@ class RootViewModel: NSObject {
         fetchWeatherData(for: Defaults.location)
         
         setupNotificationHandling()
-        
-        fetchLocation()
     }
     
     // MARK: - Helper Methods

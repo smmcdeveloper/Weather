@@ -57,6 +57,8 @@ final class RootViewController: UIViewController {
         
         // Setup Child View Controllers
         setupChildViewControllers()
+        
+        viewModel?.refresh()
     }
     
     // MARK: - Helper Methods
